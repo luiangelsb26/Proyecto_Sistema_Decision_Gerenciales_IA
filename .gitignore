@@ -1,0 +1,30 @@
+# Maven and generated deployment files
+/target/
+*.class
+*.war
+*.jar
+*.log
+*.zip
+
+# Private database configuration and environment files
+.env
+.env.*
+!.env.example
+database.properties
+database.local.properties
+config/database.local.properties
+*.dpapi
+*.pem
+*.key
+
+# Machine-specific IDE and operating-system files
+/nbproject/private/
+/nbactions*.xml
+/.idea/
+/.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+*~

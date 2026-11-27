@@ -1,0 +1,3 @@
+<%@ page pageEncoding="UTF-8" %>
+<footer class="app-footer"><span>Sistema de Decisión Gerencial</span><span>Una visión clara para cada decisión.</span></footer>
+<script src="${pageContext.request.contextPath}/assets/app.js?v=20261127-1" defer></script>
