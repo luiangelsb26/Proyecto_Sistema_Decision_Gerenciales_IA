@@ -1,110 +1,142 @@
-# Sistema de Decisión Gerencial para MYPES
+<div align="center">
 
-Aplicación web para registrar empresas, realizar una evaluación de 30 preguntas en seis dimensiones, calcular puntajes y consultar recomendaciones y reportes gerenciales. Incluye panel de resumen, navegación adaptable, búsqueda en tablas e indicador de avance del cuestionario.
+![Decisión · Gestión empresarial para MYPES](docs/assets/portada.svg)
 
-El análisis utiliza reglas predefinidas. El proyecto no incluye un servicio externo de IA ni establece por sí mismo la validez empresarial del cuestionario.
+# Sistema de Decisión Gerencial
 
-## Tecnologías
+**Una herramienta web para evaluar la gestión de las MYPES y orientar sus decisiones.**
 
-- Java, JSP y servlets Jakarta.
-- Maven y proyecto compatible con Apache NetBeans.
-- MySQL y JDBC Connector/J 8.2.0.
-- Bootstrap 5.3.3, CSS y JavaScript del proyecto.
-- BCrypt para las contraseñas de la aplicación.
-- JUnit Jupiter 5.11.4 para las pruebas.
+![Java](https://img.shields.io/badge/Java-11%2B-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
+![Jakarta](https://img.shields.io/badge/Jakarta_EE-10-243B53?style=flat-square)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=flat-square&logo=bootstrap&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-C71A36?style=flat-square&logo=apachemaven&logoColor=white)
 
-El nivel de compilación es Java 11. La instalación local se ha ejecutado con JDK 17, MySQL 9.4 y Tomcat 11.0.11. El proyecto declara Jakarta EE 10; para desplegarlo se necesita un contenedor Jakarta compatible, no un Tomcat antiguo basado en `javax.servlet`.
+[Descripción](#el-proyecto) · [Funciones](#qué-puedes-hacer) · [Carpetas](#organización-del-proyecto) · [Instalación](docs/INSTALACION.md)
 
-## Estructura
+</div>
+
+## El proyecto
+
+**Decisión** reúne el registro de empresas, la evaluación de su gestión y la consulta de resultados en un mismo espacio. Está dirigido al trabajo con micro y pequeñas empresas (MYPES), con un recorrido que va desde un cuestionario hasta recomendaciones y reportes para apoyar la revisión de sus áreas de gestión.
+
+El sistema utiliza **30 preguntas distribuidas en seis dimensiones**. Calcula puntajes y genera recomendaciones mediante un motor de reglas predefinidas. La implementación actual no integra un modelo externo de inteligencia artificial; los resultados apoyan la revisión gerencial y no constituyen por sí solos una validación del instrumento.
+
+## Qué puedes hacer
+
+| Módulo | Función |
+| :--- | :--- |
+| **Resumen general** | Consultar indicadores del sistema y acceder a las secciones principales. |
+| **Empresas** | Registrar y consultar información empresarial. |
+| **Evaluaciones** | Completar el cuestionario con un indicador de avance. |
+| **Análisis empresarial** | Consultar recomendaciones elaboradas mediante reglas. |
+| **Resultados** | Revisar puntajes y niveles de evaluación. |
+| **Reportes** | Consultar el detalle de los resultados para su revisión. |
+
+### Experiencia de uso
+
+La interfaz incorpora navegación lateral, menú adaptable a móviles, búsqueda en tablas, identificación visual de niveles y pantallas con estilos compartidos. El acceso utiliza sesiones de usuario y contraseñas almacenadas con BCrypt.
+
+```mermaid
+flowchart LR
+    A[Registrar empresa] --> B[Realizar evaluación]
+    B --> C[Calcular puntajes]
+    C --> D[Consultar recomendaciones]
+    D --> E[Revisar reporte]
+```
+
+## Organización del proyecto
+
+Se mantiene la estructura estándar de Maven para abrir y ejecutar el proyecto en NetBeans.
 
 ```text
-src/main/java/              Controladores, servicios, estrategias, DAO y modelos
-src/main/webapp/            Pantallas JSP y recursos de la interfaz
-src/main/webapp/assets/     Estilos y comportamiento compartidos
-src/main/webapp/WEB-INF/ui/  Navegación y pie de página compartidos
-src/test/java/             Pruebas unitarias y de integración
-config/                    Plantilla de configuración sin credenciales
-BD_Sistema Decision Gerencial.sql
-pom.xml
-nb-configuration.xml
+Proyecto_Sistema_Decision_Gerenciales_IA/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   ├── controller/          # Servlets y navegación
+│   │   │   ├── dao/                 # Consultas y persistencia con JDBC
+│   │   │   ├── model/               # Entidades del sistema
+│   │   │   ├── service/             # Cálculos y lógica de negocio
+│   │   │   ├── strategy/            # Motor de recomendaciones por reglas
+│   │   │   ├── util/                # Conexión privada y utilidades
+│   │   │   └── com/                 # Configuración Jakarta REST
+│   │   ├── resources/              # Recursos de configuración
+│   │   └── webapp/
+│   │       ├── assets/              # CSS y JavaScript compartidos
+│   │       ├── WEB-INF/ui/          # Navegación y pie de página
+│   │       └── *.jsp               # Pantallas del sistema
+│   └── test/java/
+│       ├── strategy/               # Prueba unitaria del motor
+│       └── integration/            # Prueba opcional con MySQL
+├── config/                         # Plantilla sin credenciales
+├── docs/                           # Documentación del proyecto
+│   ├── assets/                     # Recursos de presentación
+│   └── INSTALACION.md              # Guía de instalación y pruebas
+├── BD_Sistema Decision Gerencial.sql
+├── Dockerfile                      # Preparación para contenedores
+├── DESPLIEGUE.md                    # Guía de alojamiento
+├── railway.json                    # Configuración opcional de Railway
+├── nb-configuration.xml            # Configuración compartida de NetBeans
+├── pom.xml                         # Dependencias y compilación
+└── README.md                       # Presentación del proyecto
 ```
 
-`target/` se genera al compilar y se excluye de Git. El archivo de configuración de NetBeans incluido solo identifica el tipo de servidor; cada equipo debe registrar su propia instancia de Tomcat.
+### Explorar por carpeta
 
-## Instalación
+| Carpeta | Contenido |
+| :--- | :--- |
+| [Código Java](src/main/java) | Controladores, modelos, servicios y acceso a datos. |
+| [Interfaz web](src/main/webapp) | Pantallas JSP y componentes de navegación. |
+| [Estilos y comportamiento](src/main/webapp/assets) | Recursos visuales y JavaScript. |
+| [Pruebas](src/test/java) | Verificaciones unitarias y de integración. |
+| [Configuración](config) | Ejemplo de conexión sin contraseñas. |
+| [Documentación](docs) | Instalación, configuración y pruebas. |
 
-### 1. Abrir el proyecto
+## Arquitectura
 
-Clona el repositorio. En NetBeans selecciona **File → Open Project** y abre la carpeta que contiene `pom.xml`. Instala o configura JDK 17 y registra tu servidor Tomcat en NetBeans.
-
-### 2. Crear la base de datos
-
-En MySQL Workbench abre `BD_Sistema Decision Gerencial.sql` y ejecútalo sobre una instancia de desarrollo. Crea el esquema, sus restricciones y el catálogo de seis dimensiones y 30 preguntas.
-
-El script está pensado para una instalación nueva. No lo ejecutes sobre una base existente sin revisar su contenido. No incluye respuestas de empresas, datos personales ni una cuenta con contraseña predeterminada.
-
-### 3. Configurar la conexión de forma privada
-
-En Windows, desde PowerShell situado en la carpeta del proyecto:
-
-```powershell
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.mypes"
-Copy-Item ".\config\database.example.properties" "$env:USERPROFILE\.mypes\database.properties"
-notepad "$env:USERPROFILE\.mypes\database.properties"
+```mermaid
+flowchart TD
+    UI[Interfaz JSP · Bootstrap · CSS] --> CTRL[Controladores Jakarta Servlet]
+    CTRL --> SVC[Servicios y estrategias de evaluación]
+    CTRL --> DAO[Acceso a datos · DAO]
+    SVC --> DAO
+    DAO --> DB[(MySQL)]
 ```
 
-Completa `db.user` y `db.password` con los datos de tu MySQL. Ajusta `db.url` si cambian el host, el puerto o el esquema. Este archivo permanece fuera del repositorio y no se incorpora al WAR. Cada equipo o cuenta que ejecute Tomcat necesita su propia configuración.
+| Capa | Responsabilidad |
+| :--- | :--- |
+| **Presentación** | Formularios, panel, tablas y reportes. |
+| **Controladores** | Gestionar solicitudes y seleccionar las vistas. |
+| **Servicios y estrategias** | Procesar evaluaciones y recomendaciones. |
+| **Persistencia** | Consultar y guardar registros mediante JDBC. |
 
-También puedes usar variables de entorno `SYSDB_URL`, `SYSDB_USER` y `SYSDB_PASSWORD` en el proceso que ejecuta la aplicación. Las variables de entorno tienen prioridad sobre el archivo. `SYSDB_CONFIG` permite indicar otra ruta de archivo privado. Las propiedades Java `sysdb.url`, `sysdb.user`, `sysdb.password` y `sysdb.config` tienen prioridad sobre las variables equivalentes. Reinicia NetBeans o Tomcat si necesitas que reciban variables de entorno nuevas.
+## Ejecutarlo en tu equipo
 
-La URL de ejemplo corresponde a un entorno local de desarrollo. La configuración de red, TLS y credenciales de un servidor publicado debe ajustarse al entorno de despliegue.
+Necesitas Java, Maven, un contenedor Tomcat compatible con Jakarta y MySQL. Abre la carpeta que contiene `pom.xml` en NetBeans.
 
-### 4. Compilar
+1. Importa el SQL en una **base nueva**.
+2. Configura la conexión en un archivo privado fuera del repositorio.
+3. Compila y crea el primer administrador.
+4. Ejecuta el proyecto desde NetBeans.
 
-En NetBeans utiliza **Clean and Build**. También puedes ejecutar:
+**[Consultar la guía completa de instalación](docs/INSTALACION.md)**
 
-```text
-mvn clean package
-```
+La guía incluye los comandos, la configuración de conexión y las condiciones de las pruebas. La prueba de integración requiere una base preparada y está omitida de forma predeterminada.
 
-El archivo desplegable se genera en `target/Proyecto_Sistema_Decision_Gerenciales_IA-1.0-SNAPSHOT.war`.
+## Estado y alcance
 
-### 5. Crear el primer administrador
+- Proyecto disponible para consultar y descargar desde GitHub.
+- Ejecución local mediante NetBeans, Tomcat y MySQL.
+- Archivos de preparación Docker incluidos; no hay una aplicación pública alojada.
+- SQL de instalación con estructura y catálogos, sin cuentas ni datos empresariales locales.
+- Credenciales privadas y archivos generados de `target/` excluidos del repositorio.
 
-El script distribuido no crea cuentas de acceso. Después de compilar, abre una terminal interactiva en la carpeta del proyecto y ejecuta en Windows:
+---
 
-```text
-java -cp "target/classes;target/Proyecto_Sistema_Decision_Gerenciales_IA-1.0-SNAPSHOT/WEB-INF/lib/*" util.CrearAdministrador admin
-```
+<div align="center">
 
-La utilidad solicita una contraseña y su confirmación, y guarda un hash BCrypt. No escribas la contraseña como argumento del comando ni dentro del SQL. El nombre de usuario debe ser único. En Linux o macOS utiliza `:` como separador del classpath y adapta las rutas.
+**Decisión · Gestión empresarial para MYPES**  
+Repositorio de [Luis Angel Salinas Bardales](https://github.com/luiangelsb26)
 
-La cuenta de la aplicación es independiente de la cuenta de MySQL. En una instalación ya existente, las cuentas y sus contraseñas permanecen en la base local; subir el código no modifica esa base.
-
-### 6. Ejecutar
-
-En NetBeans selecciona **Run**, asigna el servidor Tomcat y abre:
-
-```text
-http://localhost:8080/Proyecto_Sistema_Decision_Gerenciales_IA/
-```
-
-También puedes desplegar el WAR en un Tomcat configurado por separado. Si el nombre de contexto es diferente, ajusta la dirección del navegador. Bootstrap y los iconos utilizados por algunas pantallas se descargan desde CDN; se requiere acceso a esos recursos para su presentación completa.
-
-## Pruebas
-
-La prueba unitaria del motor se ejecuta durante `mvn test`. La prueba de integración histórica está desactivada por defecto porque requiere una base de pruebas preparada con una evaluación de identificador 3 y sus resultados.
-
-Para ejecutarla explícitamente en PowerShell:
-
-```powershell
-$env:MYPES_RUN_DB_TESTS = "true"
-mvn test
-Remove-Item Env:MYPES_RUN_DB_TESTS
-```
-
-Utiliza una base de pruebas aislada y configura su conexión; la integración escribe un análisis. Una compilación con esa prueba omitida no equivale a una verificación de integración aprobada.
-
-## Alcance de GitHub
-
-Este repositorio conserva el código y el SQL de instalación. No aloja el servidor Java ni la base MySQL, no publica la aplicación por sí mismo y no contiene credenciales de la instalación local. Los parámetros privados deben configurarse por separado en cada equipo.
+</div>
